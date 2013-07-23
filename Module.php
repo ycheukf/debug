@@ -21,12 +21,16 @@ class Module
 				$oProfiler = new \FengruzhuoDebug\Model\Profiler;
 				$oProfiler->setConnectionParameters($oDbAdapter->getDriver()->getConnection()->getConnectionParameters());
 				$oDbAdapter->setProfiler($oProfiler);
+				if(get_class($oDbAdapter) == 'BjyProfiler\Db\Adapter\ProfilingAdapter')//Compatible with BjyProfiler\Db\Adapter\ProfilingAdapter
+					$oDbAdapter->injectProfilingStatementPrototype();
 
 				//add profiler to slaver adapter if exist
 				if(method_exists($oDbAdapter, 'getSlaveAdapter')){
 					$oProfiler = new \FengruzhuoDebug\Model\Profiler;
 					$oProfiler->setConnectionParameters($oDbAdapter->getSlaveAdapter()->getDriver()->getConnection()->getConnectionParameters());
 					$oDbAdapter->getSlaveAdapter()->setProfiler($oProfiler);
+					if(get_class($oDbAdapter->getSlaveAdapter()) == 'BjyProfiler\Db\Adapter\ProfilingAdapter')//Compatible with BjyProfiler\Db\Adapter\ProfilingAdapter
+						$oDbAdapter->getSlaveAdapter()->injectProfilingStatementPrototype();
 				}
 			}, 
 			-100
@@ -63,7 +67,6 @@ class Module
 
 			$this->setAttach($sm, $em);
 			$em->trigger('FengruzhuoDebugSetProfiler', $this);
-
 			if($sm->get('request')->isXmlHttpRequest() == false){
 				\FengruzhuoDebug\Model\Debug::dump($sm->get('request')->getRequestUri(), '[inline]---[request]---http start', array('datatag'=>'xmp'), 'w');
 			}else

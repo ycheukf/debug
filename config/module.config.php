@@ -2,7 +2,7 @@
 return array(
 	'debugconfig' => array(
 		'enable' => true,//true=>write cache file
-		'cachepath' => './data/cache/debug.fengruzhuo.html',
+		'cachepath' => __DIR__.'/../../../../data/cache/debug.fengruzhuo.html',
 	),
     'router' => array(
         'routes' => array(

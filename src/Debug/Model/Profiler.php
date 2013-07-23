@@ -1,7 +1,7 @@
 <?php
 namespace FengruzhuoDebug\Model;
 
-class Profiler extends \Zend\Db\Adapter\Profiler\Profiler
+class Profiler extends \BjyProfiler\Db\Profiler\Profiler
 {
     /**
      *
@@ -32,10 +32,11 @@ class Profiler extends \Zend\Db\Adapter\Profiler\Profiler
 	  public function profilerStart($target)
 	{
         $aReturn = parent::profilerStart($target);
-		$aInfo = $this->getLastProfile();
+		$oProfile = end($this->profiles);
+		$aInfo = $oProfile->toArray();
 		$aDebugInfo = array(
 			"type" => __FUNCTION__,
-			"connection_dsn" => $this->aConnectionParameters['dsn'],
+//			"connection_dsn" => $this->aConnectionParameters['dsn'],
 			"time" => "",
 			"sql" => $aInfo['sql'],
 			"datas" => $aInfo['parameters']->getNamedArray()
@@ -49,11 +50,12 @@ class Profiler extends \Zend\Db\Adapter\Profiler\Profiler
     public function profilerFinish()
     {
         $aReturn = parent::profilerFinish();
-		$aInfo = $this->getLastProfile();
+		$oProfile = end($this->profiles);
+		$aInfo = $oProfile->toArray();
 		$aDebugInfo = array(
 			"type" => __FUNCTION__,
-			"connection_dsn" => $this->aConnectionParameters['dsn'],
-			"time" => $aInfo['elapse'],
+//			"connection_dsn" => $this->aConnectionParameters['dsn'],
+			"time" => $aInfo['elapsed'],
 			"sql" => $aInfo['sql'],
 			"datas" => $aInfo['parameters']->getNamedArray()
 		);
