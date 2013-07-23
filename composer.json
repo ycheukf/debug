@@ -1,0 +1,34 @@
+{
+    "name": "fengruzhuo/Debug",
+    "description": "Module for debug and db profiler",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "fengruzhuo",
+        "profiler",
+        "write",
+        "debug",
+        "dump",
+        "zf2"
+    ],
+    "homepage": "https://github.com/fengruzhuo/debug",
+    "authors": [
+        {
+            "name": "fengruzhuo",
+            "email": "fengruzhuo@gmail.com",
+            "homepage": "https://github.com/fengruzhuo"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": ">=2.2.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "FengruzhuoDebug": "src/"
+        },
+        "classmap": [
+            "./Module.php"
+        ]
+    }
+}
