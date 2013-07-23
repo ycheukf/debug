@@ -8,7 +8,7 @@ Introduction
 FengruzhuoDebug is a debug module for zend framework 2.
 This module will dump vars and SQL to a cache file instead of printing out directly.
 
-Features / Goals
+Features
 ----------------
 
 * dump vars as var_dump
@@ -59,4 +59,4 @@ Advanced Usage
 -----
 
 If a project has multiple db adapter and master-slaver adapter, you need to attach a new event  'FengruzhuoDebugSetProfiler' into your code.
-just like the code in 'setAttach' function at vendor/fengruzhuo/debug/Module.php
+just like  'setAttach' function at vendor/fengruzhuo/debug/Module.php
