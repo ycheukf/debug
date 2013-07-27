@@ -1,6 +1,6 @@
 <?php
-namespace FengruzhuoDebug;
-use FengruzhuoDebug\Model\Debug;
+namespace YcheukfDebug;
+use YcheukfDebug\Model\Debug;
 use Zend\Mvc\MvcEvent;
 use Zend\ModuleManager\ModuleManagerInterface;
 
@@ -13,12 +13,12 @@ class Module
 
     public function setAttach($sm, $em){
 		$em->attach(
-			array('FengruzhuoDebugSetProfiler'), 
+			array('YcheukfDebugSetProfiler'), 
 			function($e) use($sm) {
-				$oDbAdapter = $sm->get('fengruzhuo_debug_db_adapter');
+				$oDbAdapter = $sm->get('Ycheukf_debug_db_adapter');
 
 				//add profiler to adapter
-				$oProfiler = new \FengruzhuoDebug\Model\Profiler;
+				$oProfiler = new \YcheukfDebug\Model\Profiler;
 				$oProfiler->setConnectionParameters($oDbAdapter->getDriver()->getConnection()->getConnectionParameters());
 				$oDbAdapter->setProfiler($oProfiler);
 				if(get_class($oDbAdapter) == 'BjyProfiler\Db\Adapter\ProfilingAdapter')//Compatible with BjyProfiler\Db\Adapter\ProfilingAdapter
@@ -26,7 +26,7 @@ class Module
 
 				//add profiler to slaver adapter if exist
 				if(method_exists($oDbAdapter, 'getSlaveAdapter')){
-					$oProfiler = new \FengruzhuoDebug\Model\Profiler;
+					$oProfiler = new \YcheukfDebug\Model\Profiler;
 					$oProfiler->setConnectionParameters($oDbAdapter->getSlaveAdapter()->getDriver()->getConnection()->getConnectionParameters());
 					$oDbAdapter->getSlaveAdapter()->setProfiler($oProfiler);
 					if(get_class($oDbAdapter->getSlaveAdapter()) == 'BjyProfiler\Db\Adapter\ProfilingAdapter')//Compatible with BjyProfiler\Db\Adapter\ProfilingAdapter
@@ -39,9 +39,9 @@ class Module
 		/**
 		  * use the below code to add profiler when using master-slaver adatper
 
-			$em->clearListeners('FengruzhuoDebugSetProfiler');
+			$em->clearListeners('YcheukfDebugSetProfiler');
 			$em->attach(
-				array('FengruzhuoDebugSetProfiler'), 
+				array('YcheukfDebugSetProfiler'), 
 				function($e) {
 					//set profiler code
 				}, 
@@ -66,11 +66,11 @@ class Module
 			$sm  = $app->getServiceManager();
 
 			$this->setAttach($sm, $em);
-			$em->trigger('FengruzhuoDebugSetProfiler', $this);
+			$em->trigger('YcheukfDebugSetProfiler', $this);
 			if($sm->get('request')->isXmlHttpRequest() == false){
-				\FengruzhuoDebug\Model\Debug::dump($sm->get('request')->getRequestUri(), '[inline]---[request]---http start', array('datatag'=>'xmp'), 'w');
+				\YcheukfDebug\Model\Debug::dump($sm->get('request')->getRequestUri(), '[inline]---[request]---http start', array('datatag'=>'xmp'), 'w');
 			}else
-				\FengruzhuoDebug\Model\Debug::dump($sm->get('request')->getRequestUri(), '[inline]---[request]---ajax start');
+				\YcheukfDebug\Model\Debug::dump($sm->get('request')->getRequestUri(), '[inline]---[request]---ajax start');
 			
 		}
 	}

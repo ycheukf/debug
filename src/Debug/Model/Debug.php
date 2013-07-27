@@ -1,5 +1,5 @@
 <?php
-namespace FengruzhuoDebug\Model;
+namespace YcheukfDebug\Model;
 
 class Debug{
 	
@@ -14,9 +14,9 @@ class Debug{
 	static function dump($data, $memo='None', $aCustomParam=array('datatag'=>'xmp'),$method="a")
 	{
 		/********************配置区域***************************/
-		$aFengruzhuoDebugConfig = require(dirname(__FILE__)."/../../../config/module.config.php");
-		$cacheFile = $aFengruzhuoDebugConfig['debugconfig']['cachepath'];//debug文件存放地址
-		$debugFlag = $aFengruzhuoDebugConfig['debugconfig']['enable'];//调试标识. 0=>不记录, 1=>记录
+		$aYcheukfDebugConfig = require(dirname(__FILE__)."/../../../config/module.config.php");
+		$cacheFile = $aYcheukfDebugConfig['debugconfig']['cachepath'];//debug文件存放地址
+		$debugFlag = $aYcheukfDebugConfig['debugconfig']['enable'];//调试标识. 0=>不记录, 1=>记录
 		$sJqueryPath = dirname(__FILE__)."/jquery.min.js";
 		/********************配置区域 end***************************/
 
@@ -26,7 +26,7 @@ class Debug{
 			return false;
 		}
 		if(isset($_SERVER['REQUEST_URI']) && is_string($_SERVER['REQUEST_URI'])){
-			if(preg_match("/.*FengruzhuoDebug.*/i", $_SERVER['REQUEST_URI'])){
+			if(preg_match("/.*YcheukfDebug.*/i", $_SERVER['REQUEST_URI'])){
 				return false;
 			}
 		}

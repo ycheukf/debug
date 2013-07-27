@@ -1,22 +1,21 @@
 {
-    "name": "fengruzhuo/debug",
-    "description": "Module for debug and db profiler",
+    "name": "ycheukf/debug",
+    "description": "a debug and db profiler Module for zf2",
     "type": "library",
     "license": "BSD-3-Clause",
     "keywords": [
-        "fengruzhuo",
-        "profiler",
+        "ycheukf",
+        "db profiler",
         "write",
-        "debug",
         "dump",
         "zf2"
     ],
-    "homepage": "https://github.com/fengruzhuo/debug",
+    "homepage": "https://github.com/ycheukf/debug",
     "authors": [
         {
-            "name": "fengruzhuo",
-            "email": "fengruzhuo@gmail.com",
-            "homepage": "https://github.com/fengruzhuo"
+            "name": "ycheukf",
+            "email": "ycheukf@gmail.com",
+            "homepage": "https://github.com/ycheukf"
         }
     ],
     "require": {
@@ -25,7 +24,7 @@
     },
     "autoload": {
         "psr-0": {
-            "FengruzhuoDebug": "src/"
+            "YcheukfDebug": "src/"
         },
         "classmap": [
             "./Module.php"
