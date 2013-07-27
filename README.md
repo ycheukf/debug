@@ -1,11 +1,11 @@
 debug
 =====
-Version 0.0.1 Created by fengruzhuo@gmail.com
+Version 0.0.1 Created by ycheukf@gmail.com
 
 Introduction
 ------------
 
-FengruzhuoDebug is a debug module for zend framework 2.
+YcheukfDebug is a debug module for zend framework 2.
 This module will dump vars and SQL to a cache file instead of printing out directly.
 
 Features
@@ -27,12 +27,12 @@ Installation
 **Install via git**
 
 Clone this repo
-`git clone https://github.com/fengruzhuo/debug.git`
+`git clone https://github.com/ycheukf/debug.git`
 
 **Install via Composer**
 
 Add this to your composer.json under "require":
-`"fengruzhuo/debug": "dev-master"`
+`"ycheukf/debug": "dev-master"`
 
 Run command:
 ``php composer.phar update``
@@ -40,23 +40,23 @@ Run command:
 Usage
 -----
 
-1:  add module 'FengruzhuoDebug' to your application.config.php
+1:  add module 'YcheukfDebug' to your application.config.php
 ```php
 return array(
     'modules' => array(
-        'FengruzhuoDebug',
+        'YcheukfDebug',
         'Application',
     ),
 );
 ```
 2:  use the below code as var_dump
 ```php
-	\FengruzhuoDebug\Model\Debug::dump($var, 'memo');
+	\YcheukfDebug\Model\Debug::dump($var, 'memo');
 ```
 3:  check the output at http://yourzf2project/index.php/public/debug
 
 Advanced Usage
 -----
 
-If a project has multiple db adapter and master-slaver adapter, you need to attach a new event  'FengruzhuoDebugSetProfiler' into your code.
-just like  'setAttach' function at vendor/fengruzhuo/debug/Module.php
+If a project has multiple db adapter and master-slaver adapter, you need to attach a new event  'YcheukfDebugSetProfiler' into your code.
+just like  'setAttach' function at vendor/ycheukf/debug/Module.php

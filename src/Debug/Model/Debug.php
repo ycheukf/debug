@@ -1,5 +1,5 @@
 <?php
-namespace FengruzhuoDebug\Model;
+namespace YcheukfDebug\Model;
 
 class Debug{
 	
@@ -12,7 +12,7 @@ class Debug{
 	@return bool
 	*/
 	static function dump($data, $memo='None', $aCustomParam=array('datatag'=>'xmp'),$method="a")
-	{
+{
 		/********************配置区域***************************/
 		$aFengruzhuoDebugConfig = require(dirname(__FILE__)."/../../../config/module.config.php");
 		$cacheFile = $aFengruzhuoDebugConfig['debugconfig']['cachepath'];//debug文件存放地址
@@ -116,7 +116,7 @@ EOT;
 		}
 		$sBlockHTML = "\n\n\n<div class='block' _k='".md5($memo)."' _l='".$memo."'><span style='display:none'><------orderIndex-------></span>";
 		$orderIndex = substr_count($oldContent, '<------orderIndex------->');
-		
+
 		list($em, $es) = explode(' ', empty($time) ? microtime() : $time);
         $timespan = (float)$em + (float)$es;
 
@@ -145,5 +145,4 @@ EOT;
 		$oldContent = str_replace("</body>", $str."</body>", $oldContent);
 		file_put_contents($cacheFile, $oldContent);
 		return 1;
-	}
-}
+	}}
