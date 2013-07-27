@@ -15,7 +15,7 @@ class Module
 		$em->attach(
 			array('YcheukfDebugSetProfiler'), 
 			function($e) use($sm) {
-				$oDbAdapter = $sm->get('Ycheukf_debug_db_adapter');
+				$oDbAdapter = $sm->get('ycheukf_debug_db_adapter');
 
 				//add profiler to adapter
 				$oProfiler = new \YcheukfDebug\Model\Profiler;
@@ -59,7 +59,7 @@ class Module
 			preg_match("/favicon.ico/i", $_SERVER['REQUEST_URI'])
 			)
 		){
-			
+
 		}else{
 			$app = $event->getApplication();
 			$em  = $app->getEventManager();
@@ -71,7 +71,7 @@ class Module
 				\YcheukfDebug\Model\Debug::dump($sm->get('request')->getRequestUri(), '[inline]---[request]---http start', array('datatag'=>'xmp'), 'w');
 			}else
 				\YcheukfDebug\Model\Debug::dump($sm->get('request')->getRequestUri(), '[inline]---[request]---ajax start');
-			
+
 		}
 	}
     public function init(ModuleManagerInterface $manager)

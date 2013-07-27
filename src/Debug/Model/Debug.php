@@ -12,11 +12,11 @@ class Debug{
 	@return bool
 	*/
 	static function dump($data, $memo='None', $aCustomParam=array('datatag'=>'xmp'),$method="a")
-	{
+{
 		/********************配置区域***************************/
-		$aYcheukfDebugConfig = require(dirname(__FILE__)."/../../../config/module.config.php");
-		$cacheFile = $aYcheukfDebugConfig['debugconfig']['cachepath'];//debug文件存放地址
-		$debugFlag = $aYcheukfDebugConfig['debugconfig']['enable'];//调试标识. 0=>不记录, 1=>记录
+		$aFengruzhuoDebugConfig = require(dirname(__FILE__)."/../../../config/module.config.php");
+		$cacheFile = $aFengruzhuoDebugConfig['debugconfig']['cachepath'];//debug文件存放地址
+		$debugFlag = $aFengruzhuoDebugConfig['debugconfig']['enable'];//调试标识. 0=>不记录, 1=>记录
 		$sJqueryPath = dirname(__FILE__)."/jquery.min.js";
 		/********************配置区域 end***************************/
 
@@ -26,7 +26,7 @@ class Debug{
 			return false;
 		}
 		if(isset($_SERVER['REQUEST_URI']) && is_string($_SERVER['REQUEST_URI'])){
-			if(preg_match("/.*YcheukfDebug.*/i", $_SERVER['REQUEST_URI'])){
+			if(preg_match("/.*FengruzhuoDebug.*/i", $_SERVER['REQUEST_URI'])){
 				return false;
 			}
 		}
@@ -116,7 +116,7 @@ EOT;
 		}
 		$sBlockHTML = "\n\n\n<div class='block' _k='".md5($memo)."' _l='".$memo."'><span style='display:none'><------orderIndex-------></span>";
 		$orderIndex = substr_count($oldContent, '<------orderIndex------->');
-		
+
 		list($em, $es) = explode(' ', empty($time) ? microtime() : $time);
         $timespan = (float)$em + (float)$es;
 
@@ -145,5 +145,4 @@ EOT;
 		$oldContent = str_replace("</body>", $str."</body>", $oldContent);
 		file_put_contents($cacheFile, $oldContent);
 		return 1;
-	}
-}
+	}}

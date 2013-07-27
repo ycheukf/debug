@@ -36,7 +36,7 @@ class Profiler extends \BjyProfiler\Db\Profiler\Profiler
 		$aInfo = $oProfile->toArray();
 		$aDebugInfo = array(
 			"type" => __FUNCTION__,
-//			"connection_dsn" => $this->aConnectionParameters['dsn'],
+			"connection_dsn" => $this->aConnectionParameters['dsn'],
 			"time" => "",
 			"sql" => $aInfo['sql'],
 			"datas" => $aInfo['parameters']->getNamedArray()
@@ -54,7 +54,7 @@ class Profiler extends \BjyProfiler\Db\Profiler\Profiler
 		$aInfo = $oProfile->toArray();
 		$aDebugInfo = array(
 			"type" => __FUNCTION__,
-//			"connection_dsn" => $this->aConnectionParameters['dsn'],
+			"connection_dsn" => $this->aConnectionParameters['dsn'],
 			"time" => $aInfo['elapsed'],
 			"sql" => $aInfo['sql'],
 			"datas" => $aInfo['parameters']->getNamedArray()
