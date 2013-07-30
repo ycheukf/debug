@@ -5,7 +5,7 @@ Version 0.0.1 Created by ycheukf@gmail.com
 Introduction
 ------------
 
-ycheukfDebug is a debug module for zend framework 2.
+YcheukfDebug is a debug module for zend framework 2.
 This module will dump vars and SQL to a cache file instead of printing out directly.
 
 Features / Goals
@@ -40,23 +40,23 @@ Run command:
 Usage
 -----
 
-1:  add module 'ycheukfDebug' to your application.config.php
+1:  add module 'YcheukfDebug' to your application.config.php
 ```php
 return array(
     'modules' => array(
-        'ycheukfDebug',
+        'YcheukfDebug',
         'Application',
     ),
 );
 ```
 2:  use the below code as var_dump
 ```php
-	\ycheukfDebug\Model\Debug::dump($var, 'memo');
+	\YcheukfDebug\Model\Debug::dump($var, 'memo');
 ```
 3:  check the output at http://yourzf2project/public/index.php/ycfdebug
 
 Advanced Usage
 -----
 
-If a project has multiple db adapter and master-slaver adapter, you need to attach a new event  'ycheukfDebugSetProfiler' into your code.
+If a project has multiple db adapter and master-slaver adapter, you need to attach a new event  'YcheukfDebugSetProfiler' into your code.
 just like the code in 'setAttach' function at vendor/ycheukf/debug/Module.php
