@@ -53,7 +53,7 @@ return array(
 ```php
 	\ycheukfDebug\Model\Debug::dump($var, 'memo');
 ```
-3:  check the output at http://yourzf2project/index.php/public/debug
+3:  check the output at http://yourzf2project/public/index.php/ycfdebug
 
 Advanced Usage
 -----

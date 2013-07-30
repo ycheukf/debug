@@ -9,7 +9,7 @@ return array(
             'debug' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/debug',
+                    'route'    => '/ycfdebug',
                     'defaults' => array(
                          '__NAMESPACE__' => 'YcheukfDebug\Controller',
                         'controller'    => 'IndexController',
