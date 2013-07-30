@@ -52,7 +52,13 @@ class Module
 
 
 	public function onBootstrap(MvcEvent $event){
-        if (PHP_SAPI === 'cli') return;
+		$app = $event->getApplication();
+		$em  = $app->getEventManager();
+		$sm  = $app->getServiceManager();
+        if (PHP_SAPI === 'cli'){ 
+			\YcheukfDebug\Model\Debug::dump($sm->get('console'), '[inline]---[request]---console start', array('datatag'=>'xmp'), 'w');
+			return;
+		}
 		$aConfig = $this->getConfig();
 		if(is_string($_SERVER['REQUEST_URI']) && (//ignore some request
 			preg_match("/.*".str_replace("/", "\/", $aConfig['router']['routes']['debug']['options']['route']).".*/i", $_SERVER['REQUEST_URI'])||
@@ -61,9 +67,6 @@ class Module
 		){
 
 		}else{
-			$app = $event->getApplication();
-			$em  = $app->getEventManager();
-			$sm  = $app->getServiceManager();
 
 			$this->setAttach($sm, $em);
 			$em->trigger('YcheukfDebugSetProfiler', $this);

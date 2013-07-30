@@ -10,6 +10,10 @@ class IndexController extends AbstractActionController
     {
         $this->layout('debug/layout');
 		$aConfig = $this->getServiceLocator()->get('configuration');
-		include($aConfig['debugconfig']['cachepath']);		
+
+        if (!is_file($aConfig['debugconfig']['cachepath'])) {
+            echo "debug file '".$aConfig['debugconfig']['cachepath']."' is not exists. ";
+        }else
+			include($aConfig['debugconfig']['cachepath']);		
     }
 }

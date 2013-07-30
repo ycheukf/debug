@@ -2,7 +2,7 @@
 return array(
 	'debugconfig' => array(
 		'enable' => true,//true=>write cache file
-		'cachepath' => __DIR__.'/../../../../data/cache/debug.Ycheukf.html',
+		'cachepath' => __DIR__.'/../../../../data/cache/ycheukf.debug.html',
 	),
     'router' => array(
         'routes' => array(

@@ -20,8 +20,9 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": ">=2.2.0"
-    },
+        "zendframework/zendframework": ">=2.2.0",
+	"bjyoungblood/BjyProfiler": "dev-master"
+   },
     "autoload": {
         "psr-0": {
             "YcheukfDebug": "src/"
