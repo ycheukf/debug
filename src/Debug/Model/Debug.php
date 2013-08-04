@@ -131,8 +131,12 @@ EOT;
 		ob_start();
 		if(is_string($data))
 			echo $data;
-		else
+		elseif(is_array($data))
 			var_export($data);
+		else{
+			var_dump($data);
+			unset($aCustomParam['datatag']);
+		}
 		$a = ob_get_contents();
 		ob_end_clean();
 		if(isset($aCustomParam['datatag']))
