@@ -21,6 +21,12 @@ class Debug{
 		/********************配置区域 end***************************/
 
 		if($debugFlag == 0 && $method=='a')return false;
+		if(!file_exists($cacheFile)){
+			mkdir(dirname($cacheFile), 777, true);
+			$fp = fopen($cacheFile, 'w');
+			fwrite($fp, "ok");
+			fclose($fp);
+		}
 		if($debugFlag == 0 && $method=='w'){
 			file_put_contents($cacheFile, "<html><head></head><body>['debugconfig']['enable'] 's value  is FALSE in this module config.php, set TRUE when debuging </body></html>");
 			return false;
