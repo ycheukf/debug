@@ -41,7 +41,8 @@ class Profiler extends \BjyProfiler\Db\Profiler\Profiler
 			"sql" => $aInfo['sql'],
 			"datas" => $aInfo['parameters']->getNamedArray()
 		);
-		\YcheukfDebug\Model\Debug::dump($this->_fmtTableView($aDebugInfo), "[inline]---[db]---".__CLASS__, array());
+//		\YcheukfDebug\Model\Debug::dump($this->_fmtTableView($aDebugInfo), "[inline]---[db]---".__CLASS__, array());
+		\YcheukfDebug\Model\Debug::dump($aDebugInfo, "[inline]---[db]---".__CLASS__);
 		return $aReturn;
 	 }
     /**
@@ -60,7 +61,7 @@ class Profiler extends \BjyProfiler\Db\Profiler\Profiler
 			"datas" => $aInfo['parameters']->getNamedArray()
 		);
 
-		\YcheukfDebug\Model\Debug::dump($this->_fmtTableView($aDebugInfo), "[inline]---[db]---".__CLASS__, array());
+		\YcheukfDebug\Model\Debug::dump($aDebugInfo, "[inline]---[db]---".__CLASS__);
 		return $aReturn;	
     }
 

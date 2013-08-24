@@ -2,7 +2,16 @@
 namespace YcheukfDebug\Model;
 
 class Debug{
-	
+	static $em=null;
+	static $triggerDebugflag=true;
+
+	static function setEventManager($em){
+		self::$em = $em;
+	}
+
+	static function setTriggerDebugflag($b){
+		self::$triggerDebugflag = $b;
+	}
 	/** debug 函数
 	@param mix data 调试的数据
 	@param string method 写文件方法,传'w'则覆盖,传'a'则续写
@@ -16,11 +25,25 @@ class Debug{
 		/********************配置区域***************************/
 		$aFengruzhuoDebugConfig = require(dirname(__FILE__)."/../../../config/module.config.php");
 		$cacheFile = $aFengruzhuoDebugConfig['debugconfig']['cachepath'];//debug文件存放地址
-		$debugFlag = $aFengruzhuoDebugConfig['debugconfig']['enable'];//调试标识. 0=>不记录, 1=>记录
+		$debugFlag = $aFengruzhuoDebugConfig['debugconfig']['enable'] && self::$triggerDebugflag;//调试标识. 0=>不记录, 1=>记录
 		$sJqueryPath = dirname(__FILE__)."/jquery.min.js";
 		/********************配置区域 end***************************/
-
 		if($debugFlag == 0 && $method=='a')return false;
+		/********************zf 2 event***************************/
+		/****
+		* 本段逻辑有两个用处.
+		* 1: 当调用该event时, 从event中所调用本函数被停止, 防止无限嵌套
+		* 2: 从事件中取回是否需要继续执行后面代码的状态. 这个功能在调用API的时候有用
+		**/
+		if(!is_null(self::$em)){
+			self::setTriggerDebugflag(false);
+			$oStopedResponce = self::$em->trigger("YcheukfDebugDump", null, array($data, $memo, $aCustomParam,$method),function($r) {return $r;});
+			self::setTriggerDebugflag(true);
+			if($oStopedResponce->first() === true)return false;
+		}
+		/********************zf 2 event end***************************/
+
+
 		if(!file_exists($cacheFile)){
 			mkdir(dirname($cacheFile), 777, true);
 			$fp = fopen($cacheFile, 'w');

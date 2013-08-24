@@ -55,6 +55,7 @@ class Module
 		$app = $event->getApplication();
 		$em  = $app->getEventManager();
 		$sm  = $app->getServiceManager();
+		\YcheukfDebug\Model\Debug::setEventManager($em);
         if (PHP_SAPI === 'cli'){ 
 			\YcheukfDebug\Model\Debug::dump($sm->get('console'), '[inline]---[request]---console start', array('datatag'=>'xmp'), 'w');
 			return;
@@ -65,7 +66,7 @@ class Module
 			preg_match("/favicon.ico/i", $_SERVER['REQUEST_URI'])
 			)
 		){
-
+			return true;
 		}else{
 
 			$this->setAttach($sm, $em);
