@@ -36,10 +36,13 @@ class Debug{
 		* 2: 从事件中取回是否需要继续执行后面代码的状态. 这个功能在调用API的时候有用
 		**/
 		if(!is_null(self::$em)){
-			self::setTriggerDebugflag(false);
-			$oStopedResponce = self::$em->trigger("YcheukfDebugDump", null, array($data, $memo, $aCustomParam,$method),function($r) {return $r;});
-			self::setTriggerDebugflag(true);
-			if($oStopedResponce->first() === true)return false;
+			$sEventName = 'YcheukfDebugDump';
+			if(in_array($sEventName, self::$em->getEvents())){
+				self::setTriggerDebugflag(false);
+				$oStopedResponce = self::$em->trigger($sEventName, null, array($data, $memo, $aCustomParam,$method),function($r) {return $r;});
+				self::setTriggerDebugflag(true);
+				if($oStopedResponce->first() === true)return false;
+			}
 		}
 		/********************zf 2 event end***************************/
 
