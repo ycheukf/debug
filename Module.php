@@ -72,9 +72,9 @@ class Module
 			$this->setAttach($sm, $em);
 			$em->trigger('YcheukfDebugSetProfiler', $this);
 			if($sm->get('request')->isXmlHttpRequest() == false){
-				\YcheukfDebug\Model\Debug::dump($sm->get('request')->getRequestUri(), '[inline]---[request]---http start', array('datatag'=>'xmp'), 'w');
+				\YcheukfDebug\Model\Debug::dump($_SERVER, '[inline]---[request http]---'.$sm->get('request')->getRequestUri(), array('datatag'=>'xmp'), 'w');
 			}else
-				\YcheukfDebug\Model\Debug::dump($sm->get('request')->getRequestUri(), '[inline]---[request]---ajax start');
+				\YcheukfDebug\Model\Debug::dump($_SERVER, '[inline]---[request ajax]---'.$sm->get('request')->getRequestUri());
 
 		}
 	}
