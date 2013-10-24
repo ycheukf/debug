@@ -61,22 +61,30 @@ class Module
 			return;
 		}
 		$aConfig = $this->getConfig();
+		if(isset($aConfig['debugconfig']['ignore_request'])){
+			foreach($aConfig['debugconfig']['ignore_request'] as $sRule){
+				if(is_string($_SERVER['REQUEST_URI']) && 
+					preg_match("/.*".str_replace("/", "\/", $sRule).".*/i", $_SERVER['REQUEST_URI'])
+					){
+					return ;
+				}
+			}
+		}
+
 		if(is_string($_SERVER['REQUEST_URI']) && (//ignore some request
-			preg_match("/.*".str_replace("/", "\/", $aConfig['router']['routes']['debug']['options']['route']).".*/i", $_SERVER['REQUEST_URI'])||
-			preg_match("/favicon.ico/i", $_SERVER['REQUEST_URI'])
+			preg_match("/.*".str_replace("/", "\/", $aConfig['router']['routes']['debug']['options']['route']).".*/i", $_SERVER['REQUEST_URI'])
 			)
 		){
 			return true;
-		}else{
+			}
 
-			$this->setAttach($sm, $em);
-			$em->trigger('YcheukfDebugSetProfiler', $this);
-			if($sm->get('request')->isXmlHttpRequest() == false){
-				\YcheukfDebug\Model\Debug::dump($_SERVER, '[inline]---[request http]---'.$sm->get('request')->getRequestUri(), array('datatag'=>'xmp'), 'w');
-			}else
-				\YcheukfDebug\Model\Debug::dump($_SERVER, '[inline]---[request ajax]---'.$sm->get('request')->getRequestUri());
+		$this->setAttach($sm, $em);
+		$em->trigger('YcheukfDebugSetProfiler', $this);
+		if($sm->get('request')->isXmlHttpRequest() == false){
+			\YcheukfDebug\Model\Debug::dump($_SERVER, '[inline]---[request http]---'.$sm->get('request')->getRequestUri(), array('datatag'=>'xmp'), 'w');
+		}else
+			\YcheukfDebug\Model\Debug::dump($_REQUEST, '[inline]---[request ajax]---'.$sm->get('request')->getRequestUri());
 
-		}
 	}
     public function init(ModuleManagerInterface $manager)
 	{

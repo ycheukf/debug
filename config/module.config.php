@@ -3,6 +3,7 @@ return array(
 	'debugconfig' => array(
 		'enable' => true,//true=>write cache file
 		'cachepath' => __DIR__.'/../../../../data/cache/ycheukf.debug.html',
+		'ignore_request' => array('.ico', '.png', '.gif', '.jpg', '.peng', 'oauth/authorize'),
 	),
     'router' => array(
         'routes' => array(
