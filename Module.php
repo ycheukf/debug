@@ -56,6 +56,7 @@ class Module
 		$em  = $app->getEventManager();
 		$sm  = $app->getServiceManager();
 		\YcheukfDebug\Model\Debug::setEventManager($em);
+		\YcheukfDebug\Model\Debug::setServiceManager($sm);
         if (PHP_SAPI === 'cli'){ 
 			\YcheukfDebug\Model\Debug::dump($sm->get('console'), '[inline]---[request]---console start', array('datatag'=>'xmp'), 'w');
 			return;

@@ -3,10 +3,14 @@ namespace YcheukfDebug\Model;
 
 class Debug{
 	static $em=null;
+	static $sm=null;
 	static $triggerDebugflag=true;
 
 	static function setEventManager($em){
 		self::$em = $em;
+	}
+	static function setServiceManager($sm){
+		self::$sm = $sm;
 	}
 
 	static function setTriggerDebugflag($b){
@@ -21,7 +25,7 @@ class Debug{
 	@return bool
 	*/
 	static function dump($data, $memo='None', $aCustomParam=array('datatag'=>'xmp'),$method="a")
-{
+	{
 		/********************配置区域***************************/
 		$aFengruzhuoDebugConfig = require(dirname(__FILE__)."/../../../config/module.config.php");
 		$cacheFile = $aFengruzhuoDebugConfig['debugconfig']['cachepath'];//debug文件存放地址
@@ -39,7 +43,7 @@ class Debug{
 			$sEventName = 'YcheukfDebugDump';
 			if(in_array($sEventName, self::$em->getEvents())){
 				self::setTriggerDebugflag(false);
-				$oStopedResponce = self::$em->trigger($sEventName, null, array($data, $memo, $aCustomParam,$method),function($r) {return $r;});
+				$oStopedResponce = self::$em->trigger($sEventName, self::$sm, array($data, $memo, $aCustomParam,$method),function($r) {return $r;});
 				self::setTriggerDebugflag(true);
 				if($oStopedResponce->first() === true)return false;
 			}
