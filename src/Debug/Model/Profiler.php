@@ -29,22 +29,22 @@ class Profiler extends \BjyProfiler\Db\Profiler\Profiler
      * @throws \Zend\Db\Adapter\Exception\InvalidArgumentException
      * @return Profiler
      */
-	  public function profilerStart($target)
-	{
-        $aReturn = parent::profilerStart($target);
-		$oProfile = end($this->profiles);
-		$aInfo = $oProfile->toArray();
-		$aDebugInfo = array(
-			"type" => __FUNCTION__,
-			"connection_dsn" => $this->aConnectionParameters['dsn'],
-			"time" => "",
-			"sql" => $aInfo['sql'],
-			"datas" => $aInfo['parameters']->getNamedArray()
-		);
-//		\YcheukfDebug\Model\Debug::dump($this->_fmtTableView($aDebugInfo), "[inline]---[db]---".__CLASS__, array());
-		\YcheukfDebug\Model\Debug::dump($aDebugInfo, "[inline]---[db]---".__CLASS__);
-		return $aReturn;
-	 }
+//	  public function profilerStart($target)
+//	{
+//        $aReturn = parent::profilerStart($target);
+//		$oProfile = end($this->profiles);
+//		$aInfo = $oProfile->toArray();
+//		$aDebugInfo = array(
+//			"type" => __FUNCTION__,
+//			"connection_dsn" => $this->aConnectionParameters['dsn'],
+//			"time" => "",
+//			"sql" => $aInfo['sql'],
+//			"datas" => $aInfo['parameters']->getNamedArray()
+//		);
+////		\YcheukfDebug\Model\Debug::dump($this->_fmtTableView($aDebugInfo), "[inline]---[db]---".__CLASS__, array());
+//		\YcheukfDebug\Model\Debug::dump($aDebugInfo, "[inline]---[db]---".__CLASS__);
+//		return $aReturn;
+//	 }
     /**
      * @return Profiler
      */
