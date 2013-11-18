@@ -52,7 +52,8 @@ class Debug{
 
 
 		if(!file_exists($cacheFile)){
-			mkdir(dirname($cacheFile), 777, true);
+			if(!file_exists(dirname($cacheFile)))
+				mkdir(dirname($cacheFile), 777, true);
 			$fp = fopen($cacheFile, 'w');
 			fwrite($fp, "ok");
 			fclose($fp);
