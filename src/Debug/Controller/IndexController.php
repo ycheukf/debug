@@ -14,6 +14,7 @@ class IndexController extends AbstractActionController
         if (!is_file($aConfig['debugconfig']['cachepath'])) {
             echo "debug file '".$aConfig['debugconfig']['cachepath']."' is not exists. ";
         }else
-			echo file_get_contents($aConfig['debugconfig']['cachepath']);		
+			echo file_get_contents($aConfig['debugconfig']['cachepath']);
+        return $this->response;
     }
 }
