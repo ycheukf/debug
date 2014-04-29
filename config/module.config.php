@@ -9,7 +9,6 @@ return array(
 			'servers' => array(
 				array('localhost', 11211, false),
 			),
-			'debug_keyname' => 'ycfdebug_debug_key',
 			'jquery_keyname' => 'ycfdebug_jquery_key',
 		),
 	),

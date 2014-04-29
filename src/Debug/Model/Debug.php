@@ -31,6 +31,7 @@ class Debug{
 		$sGlobalFile = dirname(__FILE__)."/../../../../../../config/autoload/ycfdebug.global.php";
 		$aDebugConfig = file_exists($sGlobalFile) ? require($sGlobalFile) : require($sLocalFile);
 		$cacheFile = is_null($cacheFile) ? $aDebugConfig['debugconfig']['cachepath'] : $cacheFile;//debug文件存放地址
+		$sCacheKey = basename($cacheFile);
 		$debugFlag = $aDebugConfig['debugconfig']['enable'] && self::$triggerDebugflag;//调试标识. 0=>不记录, 1=>记录
 		$sJqueryPath = dirname(__FILE__)."/jquery.min.js";
 		$sAdapter = $aDebugConfig['debugconfig']['adapter'];
@@ -73,7 +74,7 @@ class Debug{
 					$bFlag = $oMemcache->addServer($aRow[0], $aRow[1], $aRow[2]);
 				}
 				if($debugFlag == 0 && $method=='w'){
-					$memcache_obj->set($aDebugConfig['debugconfig']['memcache_config']['debug_keyname'], "<html><head></head><body>['debugconfig']['enable'] 's value  is FALSE in this module config.php, set TRUE when debuging </body></html>", MEMCACHE_COMPRESSED, 1000000);
+					$memcache_obj->set($sCacheKey, "<html><head></head><body>['debugconfig']['enable'] 's value  is FALSE in this module config.php, set TRUE when debuging </body></html>", MEMCACHE_COMPRESSED, 1000000);
 					return false;
 				}
 			break;
@@ -184,7 +185,7 @@ EOT;
 					$oldContent = (file_exists($cacheFile)) ? file_get_contents($cacheFile) : "";
 				break;
 				case 'memcache':
-					$oldContent = $oMemcache->get($aDebugConfig['debugconfig']['memcache_config']['debug_keyname']);
+					$oldContent = $oMemcache->get($sCacheKey);
 				break;
 			}
 		}
@@ -228,7 +229,7 @@ EOT;
 				file_put_contents($cacheFile, $oldContent);
 			break;
 			case 'memcache':
-				$oldContent = $oMemcache->set($aDebugConfig['debugconfig']['memcache_config']['debug_keyname'], $oldContent, MEMCACHE_COMPRESSED, 1000000);
+				$oldContent = $oMemcache->set($sCacheKey, $oldContent, MEMCACHE_COMPRESSED, 1000000);
 			break;
 		}
 		return 1;
