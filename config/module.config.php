@@ -2,8 +2,16 @@
 return array(
 	'debugconfig' => array(
 		'enable' => true,//true=>write cache file
+		'adapter' => 'file',//file|memcache
 		'cachepath' => __DIR__.'/../../../../data/cache/ycheukf.debug.html',
 		'ignore_request' => array('.css', '.js', '.ico', '.png', '.gif', '.jpg', '.peng', 'oauth/authorize'),
+		"memcache_config" => array(
+			'servers' => array(
+				array('localhost', 11211, false),
+			),
+			'debug_keyname' => 'ycfdebug_debug_key',
+			'jquery_keyname' => 'ycfdebug_jquery_key',
+		),
 	),
     'router' => array(
         'routes' => array(

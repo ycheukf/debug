@@ -24,13 +24,16 @@ class Debug{
 	@author feng
 	@return bool
 	*/
-	static function dump($data, $memo='None', $aCustomParam=array('datatag'=>'xmp'),$method="a")
+	static function dump($data, $memo='None', $aCustomParam=array('datatag'=>'xmp'),$method="a", $cacheFile=null)
 	{
 		/********************配置区域***************************/
-		$aFengruzhuoDebugConfig = require(dirname(__FILE__)."/../../../config/module.config.php");
-		$cacheFile = $aFengruzhuoDebugConfig['debugconfig']['cachepath'];//debug文件存放地址
-		$debugFlag = $aFengruzhuoDebugConfig['debugconfig']['enable'] && self::$triggerDebugflag;//调试标识. 0=>不记录, 1=>记录
+		$sLocalFile = dirname(__FILE__)."/../../../config/module.config.php";
+		$sGlobalFile = dirname(__FILE__)."/../../../../../../config/autoload/ycfdebug.global.php";
+		$aDebugConfig = file_exists($sGlobalFile) ? require($sGlobalFile) : require($sLocalFile);
+		$cacheFile = is_null($cacheFile) ? $aDebugConfig['debugconfig']['cachepath'] : $cacheFile;//debug文件存放地址
+		$debugFlag = $aDebugConfig['debugconfig']['enable'] && self::$triggerDebugflag;//调试标识. 0=>不记录, 1=>记录
 		$sJqueryPath = dirname(__FILE__)."/jquery.min.js";
+		$sAdapter = $aDebugConfig['debugconfig']['adapter'];
 		/********************配置区域 end***************************/
 		if($debugFlag == 0 && $method=='a')return false;
 		/********************zf 2 event***************************/
@@ -49,19 +52,33 @@ class Debug{
 			}
 		}
 		/********************zf 2 event end***************************/
-
-
-		if(!file_exists($cacheFile)){
-			if(!file_exists(dirname($cacheFile)))
-				mkdir(dirname($cacheFile), 777, true);
-			$fp = fopen($cacheFile, 'w');
-			fwrite($fp, "ok");
-			fclose($fp);
+		switch($sAdapter){
+			default:
+			case 'file':
+				if(!file_exists($cacheFile)){
+					if(!file_exists(dirname($cacheFile)))
+						mkdir(dirname($cacheFile), 777, true);
+					$fp = fopen($cacheFile, 'w');
+					fwrite($fp, "ok");
+					fclose($fp);
+				}
+				if($debugFlag == 0 && $method=='w'){
+					file_put_contents($cacheFile, "<html><head></head><body>['debugconfig']['enable'] 's value  is FALSE in this module config.php, set TRUE when debuging </body></html>");
+					return false;
+				}
+			break;
+			case 'memcache':
+				$oMemcache = new \Memcache;
+				foreach($aDebugConfig['debugconfig']['memcache_config']['servers'] as $aRow){
+					$bFlag = $oMemcache->addServer($aRow[0], $aRow[1], $aRow[2]);
+				}
+				if($debugFlag == 0 && $method=='w'){
+					$memcache_obj->set($aDebugConfig['debugconfig']['memcache_config']['debug_keyname'], "<html><head></head><body>['debugconfig']['enable'] 's value  is FALSE in this module config.php, set TRUE when debuging </body></html>", MEMCACHE_COMPRESSED, 1000000);
+					return false;
+				}
+			break;
 		}
-		if($debugFlag == 0 && $method=='w'){
-			file_put_contents($cacheFile, "<html><head></head><body>['debugconfig']['enable'] 's value  is FALSE in this module config.php, set TRUE when debuging </body></html>");
-			return false;
-		}
+
 		if(isset($_SERVER['REQUEST_URI']) && is_string($_SERVER['REQUEST_URI'])){
 			if(preg_match("/.*FengruzhuoDebug.*/i", $_SERVER['REQUEST_URI'])){
 				return false;
@@ -69,7 +86,19 @@ class Debug{
 		}
 		$DebugFilePath = $_SERVER["PHP_SELF"];
 		if($method=='w'){
-			$sJquery = file_get_contents($sJqueryPath);
+			switch($sAdapter){
+				default:
+				case 'file':
+					$sJquery = file_get_contents($sJqueryPath);
+				break;
+				case 'memcache':
+					$sJquery = $oMemcache->get($aDebugConfig['debugconfig']['memcache_config']['jquery_keyname']);
+					if(!$sJquery){
+						$sJquery = file_get_contents($sJqueryPath);
+						$oMemcache->set($aDebugConfig['debugconfig']['memcache_config']['jquery_keyname'], $sJquery, MEMCACHE_COMPRESSED, 1000000);
+					}
+				break;
+			}
 
 			$oldContent = '<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>DEBUGING LOG</title><script type="text/javascript">'.$sJquery.'</script>';
 			$sStyle = <<<EOT
@@ -144,12 +173,20 @@ EOT;
 			$oldContent .=$sStyle.'</head><body>
 			<div>
 				<b>\\'.__CLASS__."::".__FUNCTION__."(\$var, 'memo')".';</b>
-				<p>use the above code in your code as var_dump(), the output will be rewrote to this file instead of printing directly.
+				<p>use the above code in your code as var_dump(), the output will be rewrote to this file instead of printing directly. current adapter:'.$sAdapter.'
 			</div>
 			<hr>
 			<div id="tabs"></div></body></html>'.$sScript;
 		}else{
-			$oldContent = (file_exists($cacheFile)) ? file_get_contents($cacheFile) : "";
+			switch($sAdapter){
+				default:
+				case 'file':
+					$oldContent = (file_exists($cacheFile)) ? file_get_contents($cacheFile) : "";
+				break;
+				case 'memcache':
+					$oldContent = $oMemcache->get($aDebugConfig['debugconfig']['memcache_config']['debug_keyname']);
+				break;
+			}
 		}
 		$sBlockHTML = "\n\n\n<div class='block' _k='".md5($memo)."' _l='".$memo."'><span style='display:none'><------orderIndex-------></span>";
 		$orderIndex = substr_count($oldContent, '<------orderIndex------->');
@@ -184,6 +221,16 @@ EOT;
 		 $str .= "</div>\n<hr></div>\n\n\n";
 
 		$oldContent = str_replace("</body>", $str."</body>", $oldContent);
-		file_put_contents($cacheFile, $oldContent);
+
+		switch($sAdapter){
+			default:
+			case 'file':
+				file_put_contents($cacheFile, $oldContent);
+			break;
+			case 'memcache':
+				$oldContent = $oMemcache->set($aDebugConfig['debugconfig']['memcache_config']['debug_keyname'], $oldContent, MEMCACHE_COMPRESSED, 1000000);
+			break;
+		}
 		return 1;
-	}}
+	}
+}
