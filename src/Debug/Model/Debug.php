@@ -74,7 +74,7 @@ class Debug{
 					$bFlag = $oMemcache->addServer($aRow[0], $aRow[1], $aRow[2]);
 				}
 				if($debugFlag == 0 && $method=='w'){
-					$memcache_obj->set($sCacheKey, "<html><head></head><body>['debugconfig']['enable'] 's value  is FALSE in this module config.php, set TRUE when debuging </body></html>", MEMCACHE_COMPRESSED, 1000000);
+					$oMemcache->set($sCacheKey, "<html><head></head><body>['debugconfig']['enable'] 's value  is FALSE in this module config.php, set TRUE when debuging </body></html>", MEMCACHE_COMPRESSED, 1000000);
 					return false;
 				}
 			break;
