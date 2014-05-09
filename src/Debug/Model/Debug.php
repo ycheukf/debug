@@ -5,6 +5,7 @@ class Debug{
 	static $em=null;
 	static $sm=null;
 	static $triggerDebugflag=true;
+	static $bDumpFlag=true;
 
 	static function setEventManager($em){
 		self::$em = $em;
@@ -15,6 +16,9 @@ class Debug{
 
 	static function setTriggerDebugflag($b){
 		self::$triggerDebugflag = $b;
+	}
+	static function setDumpFlag($b){
+		self::$bDumpFlag = $b;
 	}
 	/** debug 函数
 	@param mix data 调试的数据
@@ -37,6 +41,7 @@ class Debug{
 		$sAdapter = $aDebugConfig['debugconfig']['adapter'];
 		/********************配置区域 end***************************/
 		if($debugFlag == 0 && $method=='a')return false;
+		if(self::$bDumpFlag == false)return false;
 		/********************zf 2 event***************************/
 		/****
 		* 本段逻辑有两个用处.
@@ -174,6 +179,7 @@ EOT;
 			$oldContent .=$sStyle.'</head><body>
 			<div>
 				<b>\\'.__CLASS__."::".__FUNCTION__."(\$var, 'memo')".';</b>
+				<p><b>\YcheukfCommon\Lib\Functions::debug(\$var, \'memo\');</b>
 				<p>use the above code in your code as var_dump(), the output will be rewrote to this file instead of printing directly. current adapter:'.$sAdapter.'
 			</div>
 			<hr>
