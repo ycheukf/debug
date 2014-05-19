@@ -43,7 +43,7 @@ class Debug{
 		/********************配置区域 end***************************/
 
 		//使用了限制ip功能 && 来源是远程IP
-		if(!empty($aAllowIps) && preg_match("/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $_SERVER['REMOTE_ADDR'])){
+		if(!empty($aAllowIps) && isset($_SERVER['REMOTE_ADDR']) && preg_match("/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $_SERVER['REMOTE_ADDR'])){
 			if(!in_array($_SERVER['REMOTE_ADDR'], $aAllowIps))return false;
 		}
 		if($debugFlag == 0 && $method=='a')return false;
