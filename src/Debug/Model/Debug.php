@@ -39,11 +39,12 @@ class Debug{
 		$debugFlag = $aDebugConfig['debugconfig']['enable'] && self::$triggerDebugflag;//调试标识. 0=>不记录, 1=>记录
 		$sJqueryPath = dirname(__FILE__)."/jquery.min.js";
 		$sAdapter = $aDebugConfig['debugconfig']['adapter'];
-		$aAllowIps = isset($aDebugConfig['debugconfig']) ? $aDebugConfig['debugconfig'] : array();
+		$aAllowIps = isset($aDebugConfig['debugconfig']['allowips']) ? $aDebugConfig['debugconfig']['allowips'] : array();
 		/********************配置区域 end***************************/
 
 		//使用了限制ip功能 && 来源是远程IP
 		if(!empty($aAllowIps) && isset($_SERVER['REMOTE_ADDR']) && preg_match("/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $_SERVER['REMOTE_ADDR'])){
+//			var_dump($aAllowIps);
 			if(!in_array($_SERVER['REMOTE_ADDR'], $aAllowIps))return false;
 		}
 		if($debugFlag == 0 && $method=='a')return false;
