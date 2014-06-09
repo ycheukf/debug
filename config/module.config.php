@@ -8,7 +8,7 @@ return array(
 		'ignore_request' => array('.css', '.js', '.ico', '.png', '.gif', '.jpg', '.peng', 'oauth/authorize'),
 		"memcache_config" => array(
 			'servers' => array(
-				array('localhost', 11211, false),
+//				array('localhost', 11211, false),
 			),
 			'jquery_keyname' => 'ycfdebug_jquery_key',
 		),
