@@ -24,10 +24,25 @@ class IndexController extends AbstractActionController
 			case 'memcache':
 				$oMemcache = new \Memcache;
 				foreach($aConfig['debugconfig']['memcache_config']['servers'] as $aRow){
+//					var_dump($aRow);
 					$bFlag = $oMemcache->addServer($aRow[0], $aRow[1], $aRow[2]);
+					break;
 				}
 				echo $oMemcache->get(basename($sCachePath));
 
+				break;
+			case 'redis':
+				$oRedisCache = new \Redis;
+				foreach($aConfig['debugconfig']['memcache_config']['servers'] as $aRow){
+//					var_dump($aRow);
+					$bFlag = $oRedisCache->connect($aRow[0], $aRow[1]);
+					break;
+				}
+				echo $oRedisCache->get(basename($sCachePath));
+
+				break;
+			default:
+				die("unknow adapter:".$sAdapter);
 				break;
 		}
         return $this->response;

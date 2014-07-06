@@ -83,10 +83,24 @@ class Debug{
 			case 'memcache':
 				$oMemcache = new \Memcache;
 				foreach($aDebugConfig['debugconfig']['memcache_config']['servers'] as $aRow){
+//					var_dump($aRow);
 					$bFlag = $oMemcache->addServer($aRow[0], $aRow[1], $aRow[2]);
+//					break;
 				}
 				if($debugFlag == 0 && $method=='w'){
-					$oMemcache->set($sCacheKey, "<html><head></head><body>['debugconfig']['enable'] 's value  is FALSE in this module config.php, set TRUE when debuging </body></html>", MEMCACHE_COMPRESSED, 1000000);
+					$oMemcache->set($sCacheKey, "<html><head></head><body>['debugconfig']['enable'] 's value  is FALSE in this module config.php, set TRUE when debuging </body></html>", false, 1000000);
+					return false;
+				}
+			break;
+			case 'redis':
+				$oRedisCache = new \Redis();
+				foreach($aDebugConfig['debugconfig']['memcache_config']['servers'] as $aRow){
+//					var_dump($aRow);
+					$bFlag = $oRedisCache->connect($aRow[0], $aRow[1]);
+//					break;
+				}
+				if($debugFlag == 0 && $method=='w'){
+					$oRedisCache->set($sCacheKey, "<html><head></head><body>['debugconfig']['enable'] 's value  is FALSE in this module config.php, set TRUE when debuging </body></html>");
 					return false;
 				}
 			break;
@@ -108,7 +122,14 @@ class Debug{
 					$sJquery = $oMemcache->get($aDebugConfig['debugconfig']['memcache_config']['jquery_keyname']);
 					if(!$sJquery){
 						$sJquery = file_get_contents($sJqueryPath);
-						$oMemcache->set($aDebugConfig['debugconfig']['memcache_config']['jquery_keyname'], $sJquery, MEMCACHE_COMPRESSED, 1000000);
+						$oMemcache->set($aDebugConfig['debugconfig']['memcache_config']['jquery_keyname'], $sJquery, false, 1000000);
+					}
+				break;
+				case 'redis':
+					$sJquery = $oRedisCache->get($aDebugConfig['debugconfig']['memcache_config']['jquery_keyname']);
+					if(!$sJquery){
+						$sJquery = file_get_contents($sJqueryPath);
+						$oRedisCache->set($aDebugConfig['debugconfig']['memcache_config']['jquery_keyname'], $sJquery);
 					}
 				break;
 			}
@@ -200,6 +221,9 @@ EOT;
 				case 'memcache':
 					$oldContent = $oMemcache->get($sCacheKey);
 				break;
+				case 'redis':
+					$oldContent = $oRedisCache->get($sCacheKey);
+				break;
 			}
 		}
 		$sBlockHTML = "\n\n\n<div class='block' _k='".md5($memo)."' _l='".$memo."'><span style='display:none'><------orderIndex-------></span>";
@@ -242,7 +266,10 @@ EOT;
 				file_put_contents($cacheFile, $oldContent);
 			break;
 			case 'memcache':
-				$oldContent = $oMemcache->set($sCacheKey, $oldContent, MEMCACHE_COMPRESSED, 1000000);
+				$oldContent = $oMemcache->set($sCacheKey, $oldContent, false, 20000);
+			break;
+			case 'redis':
+				$oldContent = $oRedisCache->set($sCacheKey, $oldContent);
 			break;
 		}
 		return 1;
