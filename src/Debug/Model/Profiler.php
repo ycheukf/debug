@@ -39,7 +39,7 @@ class Profiler extends \BjyProfiler\Db\Profiler\Profiler
 //			"connection_dsn" => $this->aConnectionParameters['dsn'],
 //			"time" => "",
 //			"sql" => $aInfo['sql'],
-//			"datas" => $aInfo['parameters']
+//			"datas" => is_object($aInfo['parameters']) ? $aInfo['parameters']->getNamedArray() : $aInfo['parameters'],
 //		);
 ////		\YcheukfDebug\Model\Debug::dump($this->_fmtTableView($aDebugInfo), "[inline]---[db]---".__CLASS__, array());
 //		\YcheukfDebug\Model\Debug::dump($aDebugInfo, "[inline]---[db]---".__CLASS__);
@@ -58,7 +58,7 @@ class Profiler extends \BjyProfiler\Db\Profiler\Profiler
 			"connection_dsn" => $this->aConnectionParameters['dsn'],
 			"time" => $aInfo['elapsed'],
 			"sql" => $aInfo['sql'],
-			"datas" => $aInfo['parameters']
+			"datas" => is_object($aInfo['parameters']) ? $aInfo['parameters']->getNamedArray() : $aInfo['parameters'],
 		);
 
 		\YcheukfDebug\Model\Debug::dump($aDebugInfo, "[inline]---[db]---".__CLASS__);
