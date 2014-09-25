@@ -49,7 +49,7 @@ class Debug{
             foreach($aAllowIps as $reg){
                 if(preg_match('/'.str_replace('.', '\.', $reg).'/i', $_SERVER['REMOTE_ADDR']))$bReturn = true;
             }
-            var_dump($bReturn);
+//            var_dump($bReturn);
 			if($bReturn)return false;
 		}
 		if($debugFlag == 0 && $method=='a')return false;
