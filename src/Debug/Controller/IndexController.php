@@ -36,6 +36,7 @@ class IndexController extends AbstractActionController
 				foreach($aConfig['debugconfig']['memcache_config']['servers'] as $aRow){
 //					var_dump($aRow);
 					$bFlag = $oRedisCache->connect($aRow[0], $aRow[1]);
+//                    $oRedisCache->select($aRow[2]);
 					break;
 				}
 				echo $oRedisCache->get(basename($sCachePath));
