@@ -45,11 +45,10 @@ class Debug{
 		//使用了限制ip功能 && 来源是远程IP
 		if(!empty($aAllowIps) && isset($_SERVER['REMOTE_ADDR']) && preg_match("/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $_SERVER['REMOTE_ADDR'])){
 //			var_dump($aAllowIps);
-            $bReturn = false;
             foreach($aAllowIps as $reg){
                 if(preg_match('/'.str_replace('.', '\.', $reg).'/i', $_SERVER['REMOTE_ADDR']))$bReturn = true;
             }
-//            var_dump($bReturn);
+            $bReturn = (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', 'localhost'))) ? false : true;
 			if($bReturn)return false;
 		}
 		if($debugFlag == 0 && $method=='a')return false;
