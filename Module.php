@@ -61,7 +61,8 @@ class Module
 			\YcheukfDebug\Model\Debug::dump($sm->get('console'), '[inline]---[request]---console start', array('datatag'=>'xmp'), 'w');
 			return;
 		}
-		$aConfig = $this->getConfig();
+//		$aConfig = $this->getConfig();
+		$aConfig = $sm->get('config');
 		if(isset($aConfig['debugconfig']['ignore_request'])){
 			foreach($aConfig['debugconfig']['ignore_request'] as $sRule){
 				if(is_string($_SERVER['REQUEST_URI']) && 
